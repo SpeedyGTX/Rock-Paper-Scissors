@@ -11,22 +11,17 @@ function computerPlay (){
 function playRound (userSelection, computerSelection){
     userSelection = userSelection.toLowerCase();
     if (computerSelection === userSelection){
-        i += 1;
-        console.log(`It's a draw! Your score: ${userScore} Computer score: ${compScore}`);
+        document.getElementById("notify").innerHTML = "It's a draw!";
     } else if (
         (computerSelection === "rock" && userSelection === "scissors") || (computerSelection === "scissors" & userSelection === "paper") || (computerSelection === "paper" && userSelection === "rock")
     ){
         compScore += 1;
-        i += 1;
-        console.log(`You lose this round! ${capitalize(computerSelection)} beats ${userSelection}. Your score: ${userScore} Computer score: ${compScore}` );
+        document.getElementById("notify").innerHTML = `You lose this round! ${capitalize(computerSelection)} beats ${userSelection}.`;
     } else if (
         (userSelection === "rock" && computerSelection === "scissors") || (userSelection === "scissors" & computerSelection === "paper") || (userSelection === "paper" && computerSelection === "rock")
     ){
         userScore += 1;
-        i += 1;
-        console.log(`You win this round! ${capitalize(userSelection)} beats ${computerSelection}. Your score: ${userScore} Computer score: ${compScore}` );
-    } else{
-        console.log("Please enter a valid choice.");
+        document.getElementById("notify").innerHTML = `You win this round! ${capitalize(userSelection)} beats ${computerSelection}.`;
     }}
 
     function capitalize(str){
@@ -38,39 +33,55 @@ function playRound (userSelection, computerSelection){
             function btnchk(e){
                 let playerSelection = e.target.innerHTML;
                 playRound(playerSelection, computerPlay());
+                i += 1;
                 displayScore();
-                
             }
             
-            const btns = document.querySelectorAll('div button')
-            btns.forEach(btn => btn.addEventListener('click', btnchk))
-            btns.forEach(btn => btn.addEventListener('click', () => {
-                if(i === 5){
-                    if (userScore > compScore){
-                        alert("User wins!");
-                        i = 0;
-                        userScore = 0;
-                        compScore = 0;
-                        displayScore();
-                    } else if (userScore < compScore){
-                        alert("Computer wins!");
-                        i = 0;
-                        userScore = 0;
-                        compScore = 0;
-                        displayScore();
-                    } else {
-                        alert("It's a draw!");
-                        i = 0;
-                        userScore = 0;
-                        compScore = 0;
-                        displayScore();
-                    }
-                }
-            }))
+            const btns = document.querySelectorAll('.button')
+            btns.forEach(btn => btn.addEventListener('click', (e) => {
+                btnchk(e);
+                scoreCheck();
+            }));
             
             const displayScore = function(){
                 document.getElementById("usrscr").innerHTML = `User Score: ${userScore}`;
                 document.getElementById("cmpscr").innerHTML = `Comp Score: ${compScore}`;
+            }
+
+            const scoreCheck = function(){
+                if(i === 5){
+                    if (userScore > compScore){
+                        document.getElementById("notify").innerHTML = 'You win!';
+                        playAgain();
+                        
+                    } else if (userScore < compScore){
+                        document.getElementById("notify").innerHTML = 'Computer wins!';
+                        playAgain();
+                        
+                    } else {
+                        document.getElementById("notify").innerHTML = 'Tie game.';
+                        playAgain();
+                        
+                    }
+                }
+            }
+
+            const playAgain = function(){
+                btns.forEach(btn => btn.disabled = true);
+                const btnContainer = document.querySelector('#playAgain');
+                const button = document.createElement('button');
+                button.innerHTML = 'Play Again?';
+                btnContainer.appendChild(button);
+                button.addEventListener('click', () => {
+                    document.getElementById("notify").innerHTML = '';
+                    i = 0;
+                    userScore = 0;
+                    compScore = 0;
+                    displayScore();
+                    btnContainer.removeChild(button);
+                    btns.forEach(btn => btn.disabled = false);
+                    
+                })
             }
         
     }
