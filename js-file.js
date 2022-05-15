@@ -37,7 +37,17 @@ function playRound (userSelection, computerSelection){
                 displayScore();
             }
             
+            const againButton = document.querySelector('#again')
+            againButton.style.display = "none";
+            document.getElementById("score").style.display = "none";
             const btns = document.querySelectorAll('.button')
+            btns.forEach(btn => btn.style.display = "none");
+            const startButton = document.querySelector('#start')
+            startButton.addEventListener('click', () => {
+                fadeEffect();
+                
+            })
+
             btns.forEach(btn => btn.addEventListener('click', (e) => {
                 btnchk(e);
                 scoreCheck();
@@ -67,22 +77,38 @@ function playRound (userSelection, computerSelection){
             }
 
             const playAgain = function(){
-                btns.forEach(btn => btn.disabled = true);
-                const btnContainer = document.querySelector('#playAgain');
-                const button = document.createElement('button');
-                button.innerHTML = 'Play Again?';
-                btnContainer.appendChild(button);
-                button.addEventListener('click', () => {
+                btns.forEach(btn => btn.style.display = "none");
+                againButton.style.display = "block";
+                againButton.addEventListener('click', () => {
                     document.getElementById("notify").innerHTML = '';
                     i = 0;
                     userScore = 0;
                     compScore = 0;
                     displayScore();
-                    btnContainer.removeChild(button);
-                    btns.forEach(btn => btn.disabled = false);
+                    againButton.style.display = "none";
+                    btns.forEach(btn => btn.style.display = "inline-block");
                     
                 })
             }
+
+            const fadeEffect = function(){
+                const fadeTarget = document.querySelector('#container');
+                fadeTarget.classList.toggle('fade');
+                setTimeout(function() {
+                    document.getElementById("start").style.display = "none";
+                    btns.forEach(btn => btn.style.display = "inline-block");
+                    document.getElementById("score").style.display = "flex";
+                    fadeTarget.classList.toggle('fade');
+                }, 500)
+
+                
+                
+
+            }
+
+
+
+            
         
     }
 
