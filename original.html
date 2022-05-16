@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta chatset="UTF-8">
+    <title>Page Title</title>
+</head>
+<body>
+    <script>
+
+        let userScore = 0; /* Initialize user score in order to keep track. */
+        let compScore = 0; /* Initialize computer score in order to keep track. */
+        let i = 0; /* Variable that's incremented in the playRound function in order for the while loop to not count the rounds with an invalid input */
+
+        function computerPlay (){
+            const myArray = ["rock", "paper", "scissors"];
+            return myArray[Math.floor(Math.random() * myArray.length)]; /* Multiply a float between 0 and 1 by the length of myArray and then round down to the closest integer. The integer within [] represents the array's index. */
+        }
+
+        /* The playRound function takes two parameters; userSelection and computerSelection. User selection parameter is lowercased to accommodate the input's style of capitalization. If the computer's selection happens to equal to user's input, then the console will output a draw message. Else if the computer's selection beats user's selection in all 3 varieties, a losing round message will be outputted and both i and compScore incremented. If the user's selection beats computer's selection in all 3 varities, a winning round message will be outputted and both i and userScore incremented. Otherwise, an invalid message will be outputted.*/
+        function playRound (userSelection, computerSelection){
+            userSelection = userSelection.toLowerCase();
+            if (computerSelection === userSelection){
+                i += 1;
+                console.log(`It's a draw! Your score: ${userScore} Computer score: ${compScore}`);
+            } else if (
+                (computerSelection === "rock" && userSelection === "scissors") || (computerSelection === "scissors" & userSelection === "paper") || (computerSelection === "paper" && userSelection === "rock")
+            ){
+                compScore += 1;
+                i += 1;
+                console.log(`You lose this round! ${capitalize(computerSelection)} beats ${userSelection}. Your score: ${userScore} Computer score: ${compScore}` );
+            } else if (
+                (userSelection === "rock" && computerSelection === "scissors") || (userSelection === "scissors" & computerSelection === "paper") || (userSelection === "paper" && computerSelection === "rock")
+            ){
+                userScore += 1;
+                i += 1;
+                console.log(`You win this round! ${capitalize(userSelection)} beats ${computerSelection}. Your score: ${userScore} Computer score: ${compScore}` );
+            } else{
+                console.log("Please enter a valid choice.");
+            }}
+
+            function capitalize(str){
+                return str.charAt(0).toUpperCase() + str.slice(1); /* charAt picks the first letter of a string and capitalizes it. slice cuts and returns a string from the chosen index. Both strings are then added and returned. */
+            }
+
+            /* While i is less than 5, prompt the user to input the selection and then call on the playRound function. Afterwards, compare the scores. That which is higher wins, otherwise it's a draw. */
+            function game(){
+                while (i < 5){
+                    let playerSelection = prompt("Rock, Paper or Scissors?");
+                    playRound(playerSelection, computerPlay());
+                }
+                if (userScore > compScore){
+                    alert("User wins!");
+                } else if (userScore < compScore){
+                    alert("Computer wins!");
+                } else {
+                    alert("It's a draw!");
+                }
+            }
+
+            game();
+            
+    </script>
+</body>
